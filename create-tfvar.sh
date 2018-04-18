@@ -1,4 +1,4 @@
-echo    'data_resource_group="'$ResourceGroupName'"\n'\
+echo -e  'data_resource_group="'$ResourceGroupName'"\n'\
 		'data_vnet="'$VnetName'"\n'\
         'data_subnet="'$SubnetName'"\n'\
         'image_publisher="'$ImagePublisher'"\n'\
