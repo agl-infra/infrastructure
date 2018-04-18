@@ -31,10 +31,6 @@ output "Business-Owner"{
 value = "${azurerm_virtual_machine.vm.tags.business_owner_tag}"
 }
 
-output "Schedule-Type"{
-value = "${azurerm_virtual_machine.vm.tags.schedule_type_tag}"
-}
-
 output "VM_Size"{
 value = "${azurerm_virtual_machine.vm.vm_size}"
 }
