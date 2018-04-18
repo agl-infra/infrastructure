@@ -33,8 +33,8 @@ echo -e "\n"
                   -var client_secret=${client_secret} \
                   -var subscription_id=${subscription_id} \
                   -var tenant_id=${tenant_id} \
-		  -var username=$(username) \
-		  -var password=$(password)
+		  -var username=${username} \
+		  -var password=${password}
 
 
 echo -e "\n"
