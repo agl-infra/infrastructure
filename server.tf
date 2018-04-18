@@ -24,7 +24,7 @@ tags {
     	Business-Owner = "${var.business_owner_tag}"
     	Project = "${var.project_tag}"
 	Cost-Code = "${var.cost_code_tag}"
-	Schedule-Type = "var.schedule_type_tag}"
+	Schedule-Type = "${var.schedule_type_tag}"
   }
   security_rule {
     name                       = "All-TCP"
@@ -68,7 +68,7 @@ resource "azurerm_public_ip" "eip" {
         Business-Owner = "${var.business_owner_tag}"
         Project = "${var.project_tag}"
         Cost-Code = "${var.cost_code_tag}"
-        Schedule-Type = "var.schedule_type_tag}"
+        Schedule-Type = "${var.schedule_type_tag}"
 
   }
 }
@@ -85,7 +85,7 @@ resource "azurerm_network_interface" "networkinterface" {
         Business-Owner = "${var.business_owner_tag}"
         Project = "${var.project_tag}"
         Cost-Code = "${var.cost_code_tag}"
-        Schedule-Type = "var.schedule_type_tag}"
+        Schedule-Type = "${var.schedule_type_tag}"
    
   }
   ip_configuration {
@@ -111,7 +111,7 @@ tags {
         Business-Owner = "${var.business_owner_tag}"
         Project = "${var.project_tag}"
         Cost-Code = "${var.cost_code_tag}"
-        Schedule-Type = "var.schedule_type_tag}"
+        Schedule-Type = "${var.schedule_type_tag}"
 
 }
 
@@ -167,7 +167,7 @@ resource "azurerm_virtual_machine" "vm" {
         Business-Owner = "${var.business_owner_tag}"
         Project = "${var.project_tag}"
         Cost-Code = "${var.cost_code_tag}"
-        Schedule-Type = "var.schedule_type_tag}"
+        Schedule-Type = "${var.schedule_type_tag}"
 
 }
 
