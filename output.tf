@@ -10,25 +10,25 @@ output "OS_Name"{
 value = "${azurerm_virtual_machine.vm.storage_os_disk.0.os_type}"
 }
 
-output "Technical-Owner"{
-value = "${azurerm_virtual_machine.vm.tags.Technical-Owner}"
+output "Technical_Owner"{
+value = "${azurerm_virtual_machine.vm.tags.Technical_Owner}"
 }
 
 output "Project"{
 value = "${azurerm_virtual_machine.vm.tags.Project}"
 }
 
-output "Cost-Code"{
-value = "${azurerm_virtual_machine.vm.tags.Cost-Code}"
+output "Cost_Code"{
+value = "${azurerm_virtual_machine.vm.tags.Cost_Code}"
 }
 
 
-output "Schedule-Type"{
-value = "${azurerm_virtual_machine.vm.tags.Schedule-Type}"
+output "Schedule_Type"{
+value = "${azurerm_virtual_machine.vm.tags.Schedule_Type}"
 }
 
-output "Business-Owner"{
-value = "${azurerm_virtual_machine.vm.tags.Business-Owner}"
+output "Business_Owner"{
+value = "${azurerm_virtual_machine.vm.tags.Business_Owner}"
 }
 
 output "VM_Size"{
