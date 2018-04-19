@@ -14,3 +14,5 @@ echo -e  'data_resource_group="'$ResourceGroupName'"\n'\
         'schedule_type_tag="'$ScheduleType'"\n'\
         'project_tag="'$Project'"\n'\
         'os_name="'$OperatingSystem'"\n'> variables.tfvars
+
+echo $CrNumber > cr.txt
