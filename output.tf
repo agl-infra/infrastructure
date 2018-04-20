@@ -3,7 +3,7 @@
 # }
 
 output "Private_IP"{
- value = "$(azurerm_network_interface.networkinterface.private_ip_address)"
+ value = "${azurerm_network_interface.networkinterface.private_ip_address}"
 }
 
 output "VM_Name"{
