@@ -2,6 +2,10 @@
 # value = "${azurerm_public_ip.eip.ip_address}"
 # }
 
+output "Private_IP"{
+ value = $(azurerm_network_interface.networkinterface.private_ip_address)
+}
+
 output "VM_Name"{
 value = "${azurerm_virtual_machine.vm.name}"
 }
