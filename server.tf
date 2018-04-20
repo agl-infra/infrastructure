@@ -57,21 +57,21 @@ data "azurerm_subnet" "subnet" {
 
 ## Public IP
 
-resource "azurerm_public_ip" "eip" {
-  name                         = "ip-${var.vm_name}"
-  location                     = "${data.azurerm_resource_group.rg.location}"
-  resource_group_name          = "${data.azurerm_resource_group.rg.name}"
-  public_ip_address_allocation = "static"
+# resource "azurerm_public_ip" "eip" {
+#   name                         = "ip-${var.vm_name}"
+#   location                     = "${data.azurerm_resource_group.rg.location}"
+#   resource_group_name          = "${data.azurerm_resource_group.rg.name}"
+#   public_ip_address_allocation = "static"
 
-  tags {
-        Technical-Owner = "${var.technical_owner_tag}"
-        Business-Owner = "${var.business_owner_tag}"
-        Project = "${var.project_tag}"
-        Cost-Code = "${var.cost_code_tag}"
-        Schedule-Type = "${var.schedule_type_tag}"
+#   tags {
+#         Technical-Owner = "${var.technical_owner_tag}"
+#         Business-Owner = "${var.business_owner_tag}"
+#         Project = "${var.project_tag}"
+#         Cost-Code = "${var.cost_code_tag}"
+#         Schedule-Type = "${var.schedule_type_tag}"
 
-  }
-}
+#   }
+# }
 
 ## Network Interface
 
@@ -91,8 +91,8 @@ resource "azurerm_network_interface" "networkinterface" {
   ip_configuration {
     name                          = "Terraform"
     subnet_id                     = "${data.azurerm_subnet.subnet.id}"
-    private_ip_address_allocation = "dynamic"
-    public_ip_address_id = "${azurerm_public_ip.eip.id}"
+#     private_ip_address_allocation = "dynamic"
+#     public_ip_address_id = "${azurerm_public_ip.eip.id}"
     }
 }
 
