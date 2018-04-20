@@ -1,6 +1,6 @@
-output "Public_IP"{
-value = "${azurerm_public_ip.eip.ip_address}"
-}
+# output "Public_IP"{
+# value = "${azurerm_public_ip.eip.ip_address}"
+# }
 
 output "VM_Name"{
 value = "${azurerm_virtual_machine.vm.name}"
