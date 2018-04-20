@@ -91,7 +91,7 @@ resource "azurerm_network_interface" "networkinterface" {
   ip_configuration {
     name                          = "Terraform"
     subnet_id                     = "${data.azurerm_subnet.subnet.id}"
-#     private_ip_address_allocation = "dynamic"
+    private_ip_address_allocation = "dynamic"
 #     public_ip_address_id = "${azurerm_public_ip.eip.id}"
     }
 }
