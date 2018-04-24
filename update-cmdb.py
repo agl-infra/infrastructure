@@ -1,9 +1,9 @@
 #!/usr/bin/python3.6
-
-
+from time import sleep
 import requests
 import json
 from collections import namedtuple
+from datetime import datetime
 
 def getToken(username,passoword,url):
     headers = {
@@ -63,6 +63,13 @@ def updateCMDB(data,token,url):
     resp = requests.post(url,data=data,headers=headers)
     return resp.status_code
 
+def getDateTime():
+    timeOffset = datetime.utcnow()
+    now = timeOffset.strftime("%H:%M:%S")
+    nowDay = timeOffset.strftime("%Y-%m-%d")
+    res = nowDay+'T'+now
+    return res
+
 def getCrNo():
     cr=''
     file = open("cr.txt", "r")
@@ -72,13 +79,33 @@ def getCrNo():
     # print(cr)
     return cr
 
+def getCrJson():
+    res = {
+        "values" : {
+		"z1D_Action" : "MODIFY",
+        "Outage?": "No",
+        "Change Request Status": "Closed",
+        "Status Reason": "Successful",
+        "Scheduled Start Date": "2018-04-01T10:00:00",
+        "Scheduled End Date" : "2018-04-02T15:00:00",
+        "Actual Start Date" : "2018-04-01T10:00:00",
+        "Actual End Date" : "2018-04-02T15:00:00"
+        }
+        }
+    res['values']['Scheduled Start Date']=getDateTime()
+    res['values']['Actual Start Date']=getDateTime()
+    sleep(10)
+    res['values']['Scheduled End Date']=getDateTime()
+    res['values']['Actual End Date']=getDateTime()
+    return res
 
-def closeCR(crNo,url,token):
+def closeCR(crNo,url,token,data):
     headers = {
         'Content-Type':'application/json',
         'Authorization':'AR-JWT '+token
     }
-    resp = requests.get(url,headers=headers)
+    url=url+crNo
+    resp = requests.get(url,data=data,headers=headers)
     return (resp.content)
 
 ###############main####################
@@ -89,13 +116,20 @@ username = "remedyapi"
 
 cmdbUrl = "http://glawi1283.agl.int:8008/api/arsys/v1/entry/AST:ComputerSystem"
 cmURL = "http://glawi1283.agl.int:8008/api/arsys/v1/entry/CHG:ChangeInterface"
+crURL= "http://glawi1283.agl.int:8008/api/arsys/v1/entry/CHG:ChangeInterface/"
 
 token = getToken(username,password,url).decode('utf-8')
-#print(token)
+
 data=getCMDBJson()
-#print(data)
+
 status=updateCMDB(data,token,cmdbUrl)
-print(status)
+
 if status==204:
     print("CMDB Updated Successfully.")
-    closeCR(getCrNo(),cmURL,token)
+    #closeCR(getCrNo(),cmURL,token)
+    print(getCrJson())
+else:
+    print('Error:',status)
+
+
+
