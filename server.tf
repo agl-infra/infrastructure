@@ -156,6 +156,7 @@ resource "azurerm_virtual_machine" "vm" {
     computer_name  = "${var.vm_name}"
     admin_username = "${var.username}"
     admin_password = "${var.password}"
+    root_password  = "${var.password}"	  
   }
 
   os_profile_linux_config {
