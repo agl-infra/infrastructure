@@ -169,7 +169,16 @@ resource "azurerm_virtual_machine" "vm" {
         Cost-Code = "${var.cost_code_tag}"
         Schedule-Type = "${var.schedule_type_tag}"
 
-}
+}	
+  connection {
+        host = "${var.vm_name}"
+        user = "${var.username}"
+        type = "ssh"
+        private_key = "${file("~/.ssh/id_rsa")}"
+        timeout = "1m"
+	password="${var.password}"
+        agent = true
+    }
   provisioner "remote-exec" {
     script = "update-hosts.sh"
   }
