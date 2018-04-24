@@ -156,7 +156,7 @@ resource "azurerm_virtual_machine" "vm" {
     computer_name  = "${var.vm_name}"
     admin_username = "${var.username}"
     admin_password = "${var.password}"
-    root_password  = "${var.password}"	  
+    #root_password  = "${var.password}"	  
   }
 
   os_profile_linux_config {
@@ -174,11 +174,11 @@ resource "azurerm_virtual_machine" "vm" {
   connection {
         host = "${var.vm_name}"
         #user = "${var.username}"
-	user = "root"
+	user = "jenkins"
         type = "ssh"
-        #private_key = "${file("~/.ssh/id_rsa")}"
+        private_key = "${file("~/.ssh/id_rsa")}"
         timeout = "10s"
-	password="${var.password}"
+	#password="${var.password}"
         agent = true
     }
   provisioner "remote-exec" {
