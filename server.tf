@@ -170,8 +170,8 @@ resource "azurerm_virtual_machine" "vm" {
         Schedule-Type = "${var.schedule_type_tag}"
 
 }
-	provisioner "local-exec" {
-    command = "sudo echo '10.228.10.5 azsal0047.4uepctfschkudburuyfkqje5le.px.internal.cloudapp.net'>> /etc/hosts"
+  provisioner "remote-exec" {
+    script = "update-hosts.sh"
   }
 	
 	
