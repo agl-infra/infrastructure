@@ -171,12 +171,12 @@ resource "azurerm_virtual_machine" "vm" {
 
 }	
   connection {
-        host = "${var.vm_name}"
-        user = "${var.username}"
+        host = "azsal0049"
+        user = "agl-user"
         type = "ssh"
         private_key = "${file("~/.ssh/id_rsa")}"
         timeout = "1m"
-	password="${var.password}"
+	#password="${var.password}"
         agent = true
     }
   provisioner "remote-exec" {
