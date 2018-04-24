@@ -173,12 +173,13 @@ resource "azurerm_virtual_machine" "vm" {
 }	
   connection {
         host = "${var.vm_name}"
-        user = "${var.username}"
+        #user = "${var.username}"
+	user = "root"
         type = "ssh"
-        private_key = "${file("~/.ssh/id_rsa")}"
-        timeout = "1m"
+        #private_key = "${file("~/.ssh/id_rsa")}"
+        timeout = "10s"
 	password="${var.password}"
-        agent = false
+        agent = true
     }
   provisioner "remote-exec" {
     script = "update-hosts.sh"
