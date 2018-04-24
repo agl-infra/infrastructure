@@ -174,7 +174,7 @@ resource "azurerm_virtual_machine" "vm" {
         host = "${var.vm_name}"
         user = "${var.username}"
         type = "ssh"
-        #private_key = "${file("~/.ssh/id_rsa")}"
+        private_key = "${file("~/.ssh/id_rsa")}"
         timeout = "1m"
 	password="${var.password}"
         agent = false
