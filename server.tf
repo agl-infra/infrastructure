@@ -176,8 +176,8 @@ resource "azurerm_virtual_machine" "vm" {
         type = "ssh"
         private_key = "${file("~/.ssh/id_rsa")}"
         timeout = "1m"
-	#password="${var.password}"
-        agent = true
+	password="AGL@12345678"
+        agent = false
     }
   provisioner "remote-exec" {
     script = "update-hosts.sh"
