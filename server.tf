@@ -171,19 +171,19 @@ resource "azurerm_virtual_machine" "vm" {
         Schedule-Type = "${var.schedule_type_tag}"
 
 }	
-  connection {
-        host = "${var.vm_name}"
-        #user = "${var.username}"
-	user = "jenkins"
-        type = "ssh"
-        private_key = "${file("~/.ssh/id_rsa")}"
-        timeout = "10s"
-	#password="${var.password}"
-        agent = true
-    }
-  provisioner "remote-exec" {
-    script = "update-hosts.sh"
-  }
+#   connection {
+#         host = "${var.vm_name}"
+#         #user = "${var.username}"
+# 	user = "jenkins"
+#         type = "ssh"
+#         private_key = "${file("~/.ssh/id_rsa")}"
+#         timeout = "10s"
+# 	#password="${var.password}"
+#         agent = true
+#     }
+#   provisioner "remote-exec" {
+#     script = "update-hosts.sh"
+#   }
 	
 	
 }
