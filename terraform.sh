@@ -1,16 +1,20 @@
 #!/bin/sh
 
-echo -e "\n"
-echo "************************************************"
-echo '                Terraform Download              '
-echo "************************************************"
-echo -e "\n"
+if ./terraform --version; then
+    echo "terraform already installed"
+else
+	echo -e "\n"
+	echo "************************************************"
+	echo '                Terraform Download              '
+	echo "************************************************"
+	echo -e "\n"
 
-wget https://releases.hashicorp.com/terraform/0.11.3/terraform_0.11.3_linux_386.zip
+	wget https://releases.hashicorp.com/terraform/0.11.3/terraform_0.11.3_linux_386.zip
 
-unzip -o terraform_0.11.3_linux_386.zip
+	unzip -o terraform_0.11.3_linux_386.zip
 
-rm -rf terraform_0.11.3_linux_386.zip
+	rm -rf terraform_0.11.3_linux_386.zip
+fi
 
 echo -e "\n"
 echo "************************************************"
