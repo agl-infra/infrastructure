@@ -124,7 +124,7 @@ def closeCR(crNo,url,token,data):
     }
     url=url+crNo
     # print(url)
-    # resp = requests.put(url,data=data,headers=headers)
+    resp = requests.put(url,data=data,headers=headers)
     return resp
 
 
