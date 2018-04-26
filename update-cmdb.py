@@ -70,14 +70,27 @@ def getDateTime():
     res = nowDay+'T'+now
     return res
 
-def getCrNo():
-    cr=''
+def getInfraChangeID():
+    id=''
     file = open("cr.txt", "r")
     for line in file:
-        cr=line
+        id=line
     file.close()
     # print(cr)
-    return cr
+    return id
+
+
+def getCrNo(InfraChangeID,token,url):
+    headers = {
+        'Content-Type':'application/json',
+        'Authorization':'AR-JWT '+token
+    }
+    url=url+"?q='Infrastructure Change ID' = \""+InfraChangeID+"\"&fields=values(Request ID)"
+    resp=requests.get(url,headers=headers)
+    data=json.loads(resp.content.decode('utf-8'))['entries']
+    return data[0]['values']['Request ID']
+
+
 
 def getCrJson():
     res = {
@@ -106,7 +119,7 @@ def closeCR(crNo,url,token,data):
     }
     url=url+crNo
     resp = requests.get(url,data=data,headers=headers)
-    return (resp.content)
+    return (resp.content.decode('utf-8'))
 
 ###############main####################
 
@@ -115,21 +128,32 @@ password = "remedyapi"
 username = "remedyapi"
 
 cmdbUrl = "http://glawi1283.agl.int:8008/api/arsys/v1/entry/AST:ComputerSystem"
-cmURL = "http://glawi1283.agl.int:8008/api/arsys/v1/entry/CHG:ChangeInterface"
+
 crURL= "http://glawi1283.agl.int:8008/api/arsys/v1/entry/CHG:ChangeInterface/"
 
 token = getToken(username,password,url).decode('utf-8')
+print('Token Generated...\n')
+
 
 data=getCMDBJson()
 
 status=updateCMDB(data,token,cmdbUrl)
 
+
+
+
 if status==204:
-    print("CMDB Updated Successfully.")
-    #closeCR(getCrNo(),cmURL,token)
-    print(getCrJson())
+    print("CMDB Updated Successfully....\n")
+    id=getInfraChangeID()
+    print('Attempting to get Infrastructure Change ID...\n')
+    print('Infrastructure Change ID='+id+'\n')
+    print('Attempting to get CR Number...')
+    cr=getCrNo(id,token,crURL)
+    print('CR Number='+cr+'\n')
+
+    print('Attempting to close CR...')
+    print(closeCR(cr,crURL,token,getCrJson()))
+
+
 else:
-    print('Error:',status)
-
-
-
+    print('CMDB Update Error:',status)
