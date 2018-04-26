@@ -61,7 +61,7 @@ def updateCMDB(data,token,url):
         'Authorization':'AR-JWT '+token
     }
     resp = requests.post(url,data=data,headers=headers)
-    return resp.status_code
+    return resp
 
 def getDateTime():
     timeOffset = datetime.utcnow()
@@ -145,28 +145,38 @@ print('Token Generated...\n')
 
 data=getCMDBJson()
 
-status=updateCMDB(data,token,cmdbUrl)
+CMDBresp=updateCMDB(data,token,cmdbUrl)
+status=CMDBresp.status_code
 
 
+try:
 
 
-if status==204:
-    print("CMDB Updated Successfully....\n")
-    id=getInfraChangeID()
-    id=id.replace('\n','')
-    print('Attempting to get Infrastructure Change ID...\n')
-    print('Infrastructure Change ID='+id+'\n')
-    print('Attempting to get CR Number...')
-    cr=getCrNo(id,token,crURL)
-    print('CR Number='+cr+'\n')
-    crData=getCrJson()
-    # print(crData)
-    print('Attempting to close '+cr+'...\n')
-    resp=closeCR(cr,crURL,token,crData)
-    if resp.status_code==204:
-        print(cr+' closed successfully.')
+    if status==204:
+        print("CMDB Updated Successfully....\n")
+        id=getInfraChangeID()
+        id=id.replace('\n','')
+        print('Attempting to get Infrastructure Change ID...')
+        print('Infrastructure Change ID='+id+'\n')
+        print('Attempting to get CR Number...')
+        cr=getCrNo(id,token,crURL)
+        print('CR Number='+cr+'\n')
+        crData=getCrJson()
+        # print(crData)
+        print('Attempting to close '+cr+'...\n')
+        resp=closeCR(cr,crURL,token,crData)
+        # print(resp.status_code,resp.content,resp.reason,resp.json())
+
+        if resp.status_code==204:
+            print(cr+' closed successfully.')
+        else:
+            print('CR could not be closed...')
+            print('Error:'+str(resp.status_code)+' - '+resp.json()[0]['messageAppendedText'])
+
     else:
-        print('Error:'+str(resp.status_code)+' - CR could not be closed')
+        print('CMDB Error:',status,'-',CMDBresp.json()[0]['messageAppendedText'])
 
-else:
-    print('CMDB Update Error:',status)
+except Exception as e:
+    print(e)
+
+
