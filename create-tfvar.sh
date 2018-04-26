@@ -13,6 +13,7 @@ echo -e  'data_resource_group="'$ResourceGroupName'"\n'\
         'cost_code_tag="'$CostCode'"\n'\
         'schedule_type_tag="'$ScheduleType'"\n'\
         'project_tag="'$Project'"\n'\
+	'infrastructure_change_id_tag="'$CrNumber'"\n'\
         'os_name="'$OperatingSystem'"\n'> variables.tfvars
 
  
