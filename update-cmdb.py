@@ -86,9 +86,13 @@ def getCrNo(InfraChangeID,token,url):
         'Authorization':'AR-JWT '+token
     }
     url=url+"?q='Infrastructure Change ID' = \""+InfraChangeID+"\"&fields=values(Request ID)"
+    #url=url+"?q=%27Infrastructure%20Change%20ID%27%20%3D%20%22"+InfraChangeID+"%22"
+    #print(url)
     resp=requests.get(url,headers=headers)
-    data=json.loads(resp.content.decode('utf-8'))['entries']
-    return data[0]['values']['Request ID']
+    resp=resp.content.decode('utf-8')
+    resp=json.loads(resp)
+    # print(resp['entries'][0]['values']['Request ID'])
+    return resp['entries'][0]['values']['Request ID']
 
 
 
@@ -110,6 +114,7 @@ def getCrJson():
     sleep(10)
     res['values']['Scheduled End Date']=getDateTime()
     res['values']['Actual End Date']=getDateTime()
+    res=json.dumps(res)
     return res
 
 def closeCR(crNo,url,token,data):
@@ -118,8 +123,11 @@ def closeCR(crNo,url,token,data):
         'Authorization':'AR-JWT '+token
     }
     url=url+crNo
-    resp = requests.get(url,data=data,headers=headers)
-    return (resp.content.decode('utf-8'))
+    # print(url)
+    # resp = requests.put(url,data=data,headers=headers)
+    return resp
+
+
 
 ###############main####################
 
@@ -145,15 +153,20 @@ status=updateCMDB(data,token,cmdbUrl)
 if status==204:
     print("CMDB Updated Successfully....\n")
     id=getInfraChangeID()
+    id=id.replace('\n','')
     print('Attempting to get Infrastructure Change ID...\n')
     print('Infrastructure Change ID='+id+'\n')
     print('Attempting to get CR Number...')
     cr=getCrNo(id,token,crURL)
     print('CR Number='+cr+'\n')
-
-    print('Attempting to close CR...')
-    print(closeCR(cr,crURL,token,getCrJson()))
-
+    crData=getCrJson()
+    # print(crData)
+    print('Attempting to close '+cr+'...\n')
+    resp=closeCR(cr,crURL,token,crData)
+    if resp.status_code==204:
+        print(cr+' closed successfully.')
+    else:
+        print('Error:'+str(resp.status_code)+' - CR could not be closed')
 
 else:
     print('CMDB Update Error:',status)
