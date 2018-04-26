@@ -1,5 +1,5 @@
 echo -e  'data_resource_group="'$ResourceGroupName'"\n'\
-		'data_vnet="'$VnetName'"\n'\
+	 'data_vnet="'$VnetName'"\n'\
         'data_subnet="'$SubnetName'"\n'\
         'image_publisher="'$ImagePublisher'"\n'\
         'image_offer="'$ImageOffer'"\n'\
@@ -13,8 +13,8 @@ echo -e  'data_resource_group="'$ResourceGroupName'"\n'\
         'cost_code_tag="'$CostCode'"\n'\
         'schedule_type_tag="'$ScheduleType'"\n'\
         'project_tag="'$Project'"\n'\
-	'infrastructure_change_id_tag="'$CrNumber'"\n'\
-        'os_name="'$OperatingSystem'"\n'> variables.tfvars
+	'infrastructure_change_id_tag="'$CrNumber'"\n'> variables.tfvars
+        
 
  
 echo $CrNumber > cr.txt
