@@ -25,6 +25,7 @@ tags {
     	Project = "${var.project_tag}"
 	Cost-Code = "${var.cost_code_tag}"
 	Schedule-Type = "${var.schedule_type_tag}"
+	Infrastructure-Change-Req-ID="${var.infrastructure_change_id_tag}"
   }
   security_rule {
     name                       = "All-TCP"
@@ -86,6 +87,7 @@ resource "azurerm_network_interface" "networkinterface" {
         Project = "${var.project_tag}"
         Cost-Code = "${var.cost_code_tag}"
         Schedule-Type = "${var.schedule_type_tag}"
+	Infrastructure-Change-Req-ID="${var.infrastructure_change_id_tag}"
    
   }
   ip_configuration {
@@ -112,6 +114,7 @@ tags {
         Project = "${var.project_tag}"
         Cost-Code = "${var.cost_code_tag}"
         Schedule-Type = "${var.schedule_type_tag}"
+	Infrastructure-Change-Req-ID="${var.infrastructure_change_id_tag}"
 
 }
 
@@ -169,6 +172,7 @@ resource "azurerm_virtual_machine" "vm" {
         Project = "${var.project_tag}"
         Cost-Code = "${var.cost_code_tag}"
         Schedule-Type = "${var.schedule_type_tag}"
+	Infrastructure-Change-Req-ID="${var.infrastructure_change_id_tag}"
 
 }	
 #   connection {
