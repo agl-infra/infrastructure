@@ -36,7 +36,7 @@ value = "${azurerm_virtual_machine.vm.tags.Business-Owner}"
 }
 
 output "Infrastructure_Change_Req_ID"{
-value = "${azurerm_virtual_machine.vm.tags.Infrastructure-Change-Req-ID} 
+value = "${azurerm_virtual_machine.vm.tags.Infrastructure-Change-Req-ID}" 
 }
 
 output "VM_Size"{
