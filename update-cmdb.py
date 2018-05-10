@@ -124,7 +124,7 @@ def closeCR(crNo,url,token,data):
         'Authorization':'AR-JWT '+token
     }
     url=url+crNo
-    print(url)
+    # print(url)
     resp = requests.put(url,data=data,headers=headers)
     return resp
 
@@ -135,7 +135,7 @@ def getReconID(token,url):
         'Authorization':'AR-JWT '+token
     }
     url=url+"?q='Name' = \""+data['VM_Name']['value']+"\"&fields=values(Reconciliation Identity)"
-    print('recon-url',url)
+    # print('recon-url',url)
     resp=requests.get(url,headers=headers)
     resp=resp.text
     resp=json.loads(resp)
@@ -203,10 +203,11 @@ try:
 
 
     if status==204:
+        
         reconID=getReconID(token,cmdbUrl)
         data=getCMDB_BOJson(reconID)
         CMDBresp=updateCMDB(data,token,boUrl)
-        if CMDBresp.status_code==200 or CMDBresp.status_code==204:
+        if CMDBresp.status_code==200 or CMDBresp.status_code==204 or CMDBresp.status_code==201:
             print("CMDB Updated Successfully....\n")
             print('Attempting to get Infrastructure Change ID...')
             id=getInfraChangeID()
