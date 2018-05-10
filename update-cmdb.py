@@ -45,6 +45,7 @@ def getCMDBJson():
 		"Building" : "Australia South East",
 
         "Serial Number" : ""}}
+
     res['values']['Name']=data['VM_Name']['value']
     res['values']['Asset ID+']=data['VM_Name']['value']
     res['values']['Short Description']=data['VM_Name']['value']
@@ -64,7 +65,7 @@ def updateCMDB(data,token,url):
     return resp
 
 def getDateTime():
-    timeOffset = datetime.utcnow()
+    timeOffset = datetime.now()
     now = timeOffset.strftime("%H:%M:%S")
     nowDay = timeOffset.strftime("%Y-%m-%d")
     res = nowDay+'T'+now
@@ -123,9 +124,56 @@ def closeCR(crNo,url,token,data):
         'Authorization':'AR-JWT '+token
     }
     url=url+crNo
-    # print(url)
+    print(url)
     resp = requests.put(url,data=data,headers=headers)
     return resp
+
+def getReconID(token,url):
+    data = json.load(open('vm-output.json'))
+    headers={
+        'Content-Type':'application/json',
+        'Authorization':'AR-JWT '+token
+    }
+    url=url+"?q='Name' = \""+data['VM_Name']['value']+"\"&fields=values(Reconciliation Identity)"
+    print('recon-url',url)
+    resp=requests.get(url,headers=headers)
+    resp=resp.text
+    resp=json.loads(resp)
+    return resp['entries'][0]['values']['Reconciliation Identity']
+
+
+def getCMDB_BOJson(recon_Id):
+
+    data = json.load(open('vm-output.json'))
+    res = { "values" : {
+
+        "Asset ID+": "",
+
+        "AssetInstanceId": "",
+
+        "AssetClassId": "BMC_COMPUTERSYSTEM",
+
+        "PeopleGroupInstanceID": "AGGAA5V0GMSWGAO3X03BAP050JF0FG",
+
+        "Full Name" : "Matthew Wilton",
+
+        "PeopleGroup Form Entry ID" : "PPL000000021715",
+
+        "Login Name" : "a136842",
+
+        "Form Type" : "People",
+
+        "PersonRole" : "Used by",
+
+        "Contact Company" : "AGL",
+            }
+}
+
+    res['values']['Asset ID+']=data['VM_Name']['value']
+    res['values']['AssetInstanceId']=recon_Id
+
+    res = json.dumps(res)
+    return res
 
 
 
@@ -138,6 +186,8 @@ username = "remedyapi"
 cmdbUrl = "http://glawi1283.agl.int:8008/api/arsys/v1/entry/AST:ComputerSystem"
 
 crURL= "http://glawi1283.agl.int:8008/api/arsys/v1/entry/CHG:ChangeInterface/"
+
+boUrl="http://glawi1283.agl.int:8008/api/arsys/v1/entry/AST:AssetPeople"
 
 token = getToken(username,password,url).decode('utf-8')
 print('Token Generated...\n')
@@ -153,28 +203,33 @@ try:
 
 
     if status==204:
-        print("CMDB Updated Successfully....\n")
-        id=getInfraChangeID()
-        id=id.replace('\n','')
-        print('Attempting to get Infrastructure Change ID...')
-        print('Infrastructure Change ID='+id+'\n')
-        print('Attempting to get CR Number...')
-        cr=getCrNo(id,token,crURL)
-        print('CR Number='+cr+'\n')
-        crData=getCrJson()
-        # print(crData)
-        print('Attempting to close '+cr+'...\n')
-        resp=closeCR(cr,crURL,token,crData)
-        # print(resp.status_code,resp.content,resp.reason,resp.json())
-
-        if resp.status_code==204:
-            print(cr+' closed successfully.')
+        reconID=getReconID(token,cmdbUrl)
+        data=getCMDB_BOJson(reconID)
+        CMDBresp=updateCMDB(data,token,boUrl)
+        if CMDBresp.status_code==200 or CMDBresp.status_code==204:
+            print("CMDB Updated Successfully....\n")
+            print('Attempting to get Infrastructure Change ID...')
+            id=getInfraChangeID()
+            id=id.replace('\n','')
+            print('Infrastructure Change ID='+id+'\n')
+            print('Attempting to get CR Number...')
+            cr=getCrNo(id,token,crURL)
+            print('CR Number='+cr+'\n')
+            crData=getCrJson()
+            print(crData)
+            print('Attempting to close '+cr+'...\n')
+            resp=closeCR(cr,crURL,token,crData)
+            # print(resp.status_code,resp.content,resp.reason,resp.json())
+            if resp.status_code==204:
+                print(cr+' closed successfully.')
+            else:
+                print('CR could not be closed...')
+                print('Error:'+str(resp.status_code)+' - '+resp.json()[0]['messageAppendedText'])
         else:
-            print('CR could not be closed...')
-            print('Error:'+str(resp.status_code)+' - '+resp.json()[0]['messageAppendedText'])
+             print('CMDB BO Update Error:',status,'-',CMDBresp.json()[0]['messageAppendedText'])
 
     else:
-        print('CMDB Error:',status,'-',CMDBresp.json()[0]['messageAppendedText'])
+        print('CMDB Update Error:',status,'-',CMDBresp.json()[0]['messageAppendedText'])
 
 except Exception as e:
     print(e)
