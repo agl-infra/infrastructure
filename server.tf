@@ -159,7 +159,6 @@ resource "azurerm_virtual_machine" "vm" {
     computer_name  = "${var.vm_name}"
     admin_username = "${var.username}"
     admin_password = "${var.password}"
-    #root_password  = "${var.password}"	  
   }
 
   os_profile_linux_config {
@@ -175,20 +174,22 @@ resource "azurerm_virtual_machine" "vm" {
 	Infrastructure-Change-Req-ID="${var.infrastructure_change_id_tag}"
 
 }	
-#   connection {
-#         host = "${var.vm_name}"
-#         #user = "${var.username}"
-# 	user = "jenkins"
-#         type = "ssh"
-#         private_key = "${file("~/.ssh/id_rsa")}"
-#         timeout = "10s"
-# 	#password="${var.password}"
-#         agent = true
-#     }
-#   provisioner "remote-exec" {
-#     script = "update-hosts.sh"
-#   }
-	
+  connection {
+        host = "${azurerm_network_interface.networkinterface.private_ip_address}"
+        user = "${var.username}"
+	password="${var.password}"
+	type = "ssh"
+        timeout = "1m"
+	agent = false
+    }
+  
+   provisioner "remote-exec" {
+     inline = ["echo '10.228.10.5 azsal0047.4uepctfschkudburuyfkqje5le.px.internal.cloudapp.net' >> /etc/hosts "]
+   }
+   provisioner "file" {
+     source      = "file.txt"
+     destination = "/home/${var.username}/file.txt"
+   }
 	
 }
 
